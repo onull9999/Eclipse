@@ -71,6 +71,26 @@
     <p class="minecraft-text">Minecraft SolsticeSkid Client</p>
     <p> Eclipse V7 - Coming soon...</p>
     <a href="https://discord.gg/VYyrtFX2ed" class="discord-button">Discord Server</a>
+
+    <a id="downloadBtn" href="https://github.com/onull9999/Eclipse/raw/refs/heads/main/Eclipse.dll" 
+   class="discord-button" download>
+   Download click here
+</a>
+<p id="downloadCountText" class="minecraft-text">It has been downloaded 0 times so far.</p>
+
+<script>
+    //counter
+    let downloadCount = localStorage.getItem("eclipseDownloadCount") || 0;
+    document.getElementById("downloadCountText").textContent = `It has been downloaded ${downloadCount} times so far.`;
+
+    
+    document.getElementById("downloadBtn").addEventListener("click", function () {
+        downloadCount++;
+        localStorage.setItem("eclipseDownloadCount", downloadCount);
+        document.getElementById("downloadCountText").textContent = `It has been downloaded ${downloadCount} times so far.`;
+    });
+</script>
+    
     <div class="contributors">
         <h2>Dev</h2>
         <p>@Tqk4Playz (<a href="https://github.com/Tqk4Playz">GitHub</a>)</p>
