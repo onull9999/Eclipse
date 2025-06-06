@@ -3,396 +3,152 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eclipse Client</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Eclipse</title>
     <style>
-        :root {
-            --primary: #6a11cb;
-            --secondary: #2575fc;
-            --dark: #0f0c29;
-            --light: #f8f9fa;
-            --accent: #ff4d4d;
+        .tab-menu {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 15px;
+            z-index: 100;
         }
         
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        .tab {
+            padding: 8px 20px;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            text-decoration: none;
+            border-radius: 20px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
         
+        .tab:hover {
+            background-color: rgba(114, 137, 218, 0.8);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, var(--dark), #1a1a2e);
-            color: var(--light);
-            min-height: 100vh;
-            overflow-x: hidden;
-            position: relative;
             display: flex;
             flex-direction: column;
-            align-items: center;
             justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: white;
+            font-family: Arial, sans-serif;
             text-align: center;
-        }
-        
-        body::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at 20% 30%, rgba(106, 17, 203, 0.15) 0%, transparent 40%),
-                        radial-gradient(circle at 80% 70%, rgba(37, 117, 252, 0.15) 0%, transparent 40%);
-            z-index: -1;
-        }
-        
-        .stars {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
+            margin: 0;
             overflow: hidden;
-        }
-        
-        .star {
-            position: absolute;
-            background-color: white;
-            border-radius: 50%;
-            animation: twinkle var(--duration) infinite ease-in-out;
-            opacity: 0;
-        }
-        
-        @keyframes twinkle {
-            0%, 100% { opacity: 0; transform: scale(0.5); }
-            50% { opacity: var(--opacity); transform: scale(1); }
-        }
-        
-        .eclipse-container {
             position: relative;
-            width: 200px;
-            height: 200px;
-            margin: 0 auto 30px;
         }
-        
-        .sun {
+
+        .background-wrapper {
             position: absolute;
-            width: 120px;
-            height: 120px;
-            background: radial-gradient(circle, #ff8a00, #ff4d4d);
-            border-radius: 50%;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            box-shadow: 0 0 50px #ff4d4d, 0 0 100px rgba(255, 77, 77, 0.5);
-            animation: pulse 4s infinite alternate;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            overflow: hidden;
+            z-index: -1;
         }
         
-        .moon {
-            position: absolute;
-            width: 120px;
-            height: 120px;
-            background: var(--dark);
-            border-radius: 50%;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            animation: eclipse 15s infinite linear;
+        .background-image {
+            width: 100%;
+            height: 100%;
+            background-image: url('back.png');
+            background-size: cover;
+            background-position: center;
+            filter: blur(4px);
+            transform: scale(1.1);
         }
-        
-        @keyframes pulse {
-            0% { box-shadow: 0 0 50px #ff4d4d, 0 0 100px rgba(255, 77, 77, 0.5); }
-            100% { box-shadow: 0 0 70px #ff4d4d, 0 0 140px rgba(255, 77, 77, 0.7); }
-        }
-        
-        @keyframes eclipse {
-            0%, 100% { transform: translate(-50%, -50%) translateX(-80px); }
-            25% { transform: translate(-50%, -50%) translateX(0); }
-            50% { transform: translate(-50%, -50%) translateX(80px); }
-            75% { transform: translate(-50%, -50%) translateX(0); }
-        }
-        
+
         h1 {
-            font-size: 4rem;
-            margin-bottom: 10px;
-            background: linear-gradient(to right, var(--primary), var(--secondary), var(--primary));
+            font-size: 70px;
+            background: linear-gradient(to right, rgb(255, 104, 235), rgb(170, 67, 255), rgb(254, 146, 240));
             -webkit-background-clip: text;
-            background-clip: text;
             color: transparent;
-            background-size: 200% auto;
-            animation: gradient 3s linear infinite;
-            font-weight: 800;
-            letter-spacing: 2px;
+            background-size: 300% 100%;
+            animation: gradientMove 3s infinite linear;
         }
         
-        @keyframes gradient {
-            0% { background-position: 0% center; }
-            100% { background-position: 200% center; }
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 300% 50%; }
         }
         
-        .tagline {
-            font-size: 1.2rem;
-            margin-bottom: 30px;
-            color: rgba(255, 255, 255, 0.8);
-            font-weight: 300;
-            max-width: 600px;
-            line-height: 1.6;
-        }
-        
-        .version-badge {
+        .discord-button {
             display: inline-block;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 5px 15px;
-            border-radius: 20px;
-            margin-bottom: 30px;
-            font-weight: 600;
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            animation: float 3s ease-in-out infinite;
-        }
-        
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-        
-        .buttons {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 40px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-        
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 12px 25px;
-            font-size: 1rem;
-            font-weight: 600;
-            border-radius: 50px;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-            z-index: 1;
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 20px;
+            color: white;
+            background-color: #5865F2;
             border: none;
-            cursor: pointer;
-            min-width: 180px;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background 0.3s;
         }
         
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, var(--primary), var(--secondary));
-            z-index: -1;
-            transition: all 0.3s ease;
-        }
-        
-        .btn:hover::before {
-            transform: scale(1.05);
-            opacity: 0.9;
-        }
-        
-        .btn-discord {
-            background: linear-gradient(45deg, #5865F2, #7289DA);
-            box-shadow: 0 4px 15px rgba(88, 101, 242, 0.4);
-        }
-        
-        .btn-download {
-            background: linear-gradient(45deg, var(--accent), #ff8a00);
-            box-shadow: 0 4px 15px rgba(255, 77, 77, 0.4);
-        }
-        
-        .btn i {
-            margin-right: 8px;
-            font-size: 1.2rem;
+        .discord-button:hover {
+            background-color: #4752C4;
         }
         
         .contributors {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 15px;
-            padding: 25px;
             margin-top: 30px;
-            max-width: 500px;
-            width: 100%;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            padding: 10px;
+            border: 2px solid white;
+            border-radius: 10px;
+            background-color: rgba(0, 0, 0, 0.3);
         }
         
         .contributors h2 {
-            margin-bottom: 20px;
-            font-size: 1.5rem;
-            color: var(--light);
-            position: relative;
-            display: inline-block;
+            margin-bottom: 10px;
         }
         
-        .contributors h2::after {
-            content: '';
-            position: absolute;
-            bottom: -8px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 50px;
-            height: 3px;
-            background: linear-gradient(to right, var(--primary), var(--secondary));
-            border-radius: 3px;
-        }
-        
-        .dev-list {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 15px;
-        }
-        
-        .dev-item {
-            display: flex;
-            align-items: center;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 8px 15px;
-            border-radius: 50px;
-            transition: all 0.3s ease;
-        }
-        
-        .dev-item:hover {
-            transform: translateY(-3px);
-            background: rgba(255, 255, 255, 0.2);
-        }
-        
-        .dev-item a {
-            color: var(--light);
+        .contributors a {
+            color: lightblue;
             text-decoration: none;
-            display: flex;
-            align-items: center;
-            font-weight: 500;
         }
         
-        .dev-item a:hover {
-            color: var(--secondary);
+        .contributors a:hover {
+            text-decoration: underline;
         }
         
-        .dev-item i {
-            margin-right: 8px;
-            color: var(--secondary);
-        }
-        
-        footer {
-            margin-top: 40px;
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 0.9rem;
-        }
-        
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 2.5rem;
-            }
-            
-            .eclipse-container {
-                width: 150px;
-                height: 150px;
-            }
-            
-            .sun, .moon {
-                width: 90px;
-                height: 90px;
-            }
-            
-            .buttons {
-                flex-direction: column;
-                gap: 15px;
-            }
-            
-            .btn {
-                width: 100%;
-            }
+        .minecraft-text {
+            font-size: 16px;
+            color: white;
+            margin-top: 10px;
         }
     </style>
 </head>
 <body>
-    <div class="stars" id="stars"></div>
-    
-    <div class="eclipse-container">
-        <div class="sun"></div>
-        <div class="moon"></div>
+    <div class="tab-menu">
+        <a href="index.html" class="tab">Home</a>
+        <a href="help.html" class="tab">Help</a>
+        <a href="update.html" class="tab">Update</a>
     </div>
-    
-    <h1>ECLIPSE</h1>
-    <p class="tagline">|  Minecraft SolsticeSkid Client  |             </p>
-    
-    <div class="version-badge">V7 - Coming Soon</div>
-    
-    <div class="buttons">
-        <a href="https://discord.gg/VYyrtFX2ed" class="btn btn-discord">
-            <i class="fab fa-discord"></i> Discord Server
-        </a>
-        <a id="downloadBtn" href="https://github.com/onull9999/Eclipse/raw/refs/heads/main/Eclipse.dll" class="btn btn-download" download>
-            <i class="fas fa-download"></i> Download Now
-        </a>
+
+    <div class="background-wrapper">
+        <div class="background-image"></div>
     </div>
-    
+
+    <h1>Eclipse</h1>
+    <p class="minecraft-text">Minecraft SolsticeSkid Client</p>
+    <p>1.21.70 release soon</p>
+    <a href="https://discord.gg/VYyrtFX2ed" class="discord-button">Discord Server</a>
     <div class="contributors">
-        <h2>Development Team</h2>
-        <div class="dev-list">
-            </div>
-            <div class="dev-item">
-                <a href="https://github.com/onull9999"><i class="fab fa-github"></i> @onull9999</a>
-            </div>
-            <div class="dev-item">
-                <a href="https://github.com/Aspw-w"><i class="fab fa-github"></i> @Aspw</a>
-            </div>
-            <div class="dev-item">
-                <a href="https://github.com/Ascend-UwU"><i class="fab fa-github"></i> @owo</a>
-            </div>
-        </div>
+        <h2>Dev</h2>
+        <p>@onull9999 (<a href="https://github.com/onull9999">GitHub</a>)</p>
+        <p>@owo (<a href="https://github.com/Ascend-UwU">GitHub</a>)</p>
     </div>
-    
-    <footer>
-        &copy; 2025 Eclipse Client. All rights reserved.
-    </footer>
-    
     <script>
-
-        const starsContainer = document.getElementById('stars');
-        const starCount = 100;
-        
-        for (let i = 0; i < starCount; i++) {
-            const star = document.createElement('div');
-            star.classList.add('star');
-            
-
-            const size = Math.random() * 3;
-            const x = Math.random() * 100;
-            const y = Math.random() * 100;
-            const duration = 2 + Math.random() * 3;
-            const delay = Math.random() * 5;
-            const opacity = 0.5 + Math.random() * 0.5;
-            
-            star.style.width = `${size}px`;
-            star.style.height = `${size}px`;
-            star.style.left = `${x}%`;
-            star.style.top = `${y}%`;
-            star.style.setProperty('--duration', `${duration}s`);
-            star.style.setProperty('--opacity', opacity);
-            star.style.animationDelay = `${delay}s`;
-            
-            starsContainer.appendChild(star);
-        }
-        
-
-        document.addEventListener('mousemove', (e) => {
+        document.addEventListener('mousemove', function(e) {
             const x = e.clientX / window.innerWidth;
             const y = e.clientY / window.innerHeight;
-            
-            starsContainer.style.transform = `translate(-${x * 20}px, -${y * 20}px)`;
+            const bgX = 50 + (x - 0.5) * 10;
+            const bgY = 50 + (y - 0.5) * 10;
+            document.querySelector('.background-image').style.backgroundPosition = `${bgX}% ${bgY}%`;
         });
     </script>
 </body>
